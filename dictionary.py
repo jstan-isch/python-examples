@@ -1,4 +1,5 @@
 import json
+import re
 from difflib import get_close_matches 
 
 
@@ -10,6 +11,10 @@ data = json.load(open('data.json'))
 def vocab(word):
     if word in data:
         return data[word]
+    elif word.title() in data:
+        return data[word.title()]
+    elif word.upper() in data:
+        return data[word.upper()]
     elif len(get_close_matches(word, data.keys())) > 0:
         yn = (input('Did you mean {} if YES enter Y, if NO enter N: '.format(get_close_matches(word, data.keys())[0]))).lower()
         if yn == 'y' or yn == 'yes':
@@ -24,14 +29,15 @@ def vocab(word):
 
 # get input from user
 user_input = input('Please enter a word: ')
-outputs = vocab(user_input.lower())
+
+output = vocab(user_input.lower())
 
 
-if isinstance(outputs, list):
-    for output in outputs:
-        print(output)
+if isinstance(output, list):
+    for item in output:
+        print(item)
 else:
-    print(outputs)
+    print(output)
 
 
 
